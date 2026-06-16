@@ -1,17 +1,90 @@
-.input{
+@import "tailwindcss";
 
-width:100%;
-padding:12px;
-margin-top:15px;
-border-radius:15px;
-background:white;
-border:1px solid #ddd;
+
+body{
+
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"SF Pro Display",
+sans-serif;
 
 }
 
-.dark .input{
 
-background:#111;
-border-color:#333;
+
+.glass{
+
+background:
+rgba(255,255,255,0.12);
+
+backdrop-filter:
+blur(30px);
+
+border:
+1px solid rgba(255,255,255,0.18);
+
+}
+
+
+
+.glassInput{
+
+width:100%;
+
+padding:18px;
+
+border-radius:24px;
+
+background:
+rgba(255,255,255,0.10);
+
+backdrop-filter:
+blur(20px);
+
+border:
+1px solid rgba(255,255,255,0.2);
+
+font-size:18px;
+
+outline:none;
+
+}
+
+
+
+.mainButton{
+
+background:white;
+
+color:black;
+
+padding:
+16px 24px;
+
+border-radius:30px;
+
+font-weight:600;
+
+}
+
+
+
+.secondButton{
+
+padding:
+16px 24px;
+
+border-radius:30px;
+
+background:
+rgba(255,255,255,0.15);
+
+}
+
+
+.dark body{
+
+background:#000;
 
 }
