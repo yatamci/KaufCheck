@@ -1,42 +1,48 @@
 "use client"
 
-
-import {useState} from "react";
-
-import categories from "@/data/categories.json";
-
-import {calculateScore}
-from "@/lib/calculator";
-
-import ResultCard
-from "./ResultCard";
+import {useState} from "react"
+import categories from "@/data/categories.json"
+import {calculateScore} from "@/lib/calculator"
+import ResultCard from "./ResultCard"
 
 
 export default function Calculator(){
 
+const list =
+Object.keys(categories).sort(
+(a,b)=>a.localeCompare(b)
+)
 
-const [result,setResult]=useState<any>();
 
+const [search,setSearch]=useState("")
+const [selected,setSelected]=useState("")
 
 const [data,setData]=useState({
-
-category:"Smartphone",
 price:"",
 date:"",
 newPrice:""
+})
 
-});
+
+const [result,setResult]=useState<any>()
+
+
+const filtered =
+list.filter(x=>
+x.toLowerCase()
+.includes(search.toLowerCase())
+)
+
 
 
 function reset(){
 
+setSearch("")
+setSelected("")
 setData({
-
-category:"Smartphone",
 price:"",
 date:"",
 newPrice:""
-
 })
 
 setResult(undefined)
@@ -44,46 +50,92 @@ setResult(undefined)
 }
 
 
-
 return(
 
-<div>
+<div className="space-y-5 mt-10">
 
 
-<select
+<div className="relative">
 
-className="input"
+<input
 
-value={data.category}
+placeholder="Kategorie suchen..."
+
+value={search}
 
 onChange={
-e=>setData({
-...data,
-category:e.target.value
-})
+e=>{
+setSearch(e.target.value)
+setSelected("")
 }
+}
+
+className="glassInput"
+
+/>
+
+
+{
+search && !selected &&
+
+<div className="
+absolute
+z-10
+w-full
+mt-2
+glass
+rounded-3xl
+overflow-hidden
+">
+
+{
+filtered.map(item=>(
+
+<button
+
+key={item}
+
+onClick={()=>{
+
+setSelected(item)
+setSearch(item)
+
+}}
+
+className="
+block
+w-full
+text-left
+px-5
+py-3
+hover:bg-white/20
+"
 
 >
 
-{
-Object.keys(categories)
-.map(x=>
+{item}
 
-<option key={x}>
-{x}
-</option>
+</button>
 
-)
+))
 
 }
 
-</select>
+</div>
+
+}
+
+
+</div>
 
 
 
 <input
-placeholder="Alter Kaufpreis"
-className="input"
+
+placeholder="Alter Kaufpreis (€)"
+
+className="glassInput"
+
 value={data.price}
 
 onChange={
@@ -92,15 +144,22 @@ e=>setData({
 price:e.target.value
 })
 }
+
 />
 
+
+<label className="text-sm opacity-70">
+
+Kaufdatum
+
+</label>
 
 
 <input
 
 type="date"
 
-className="input"
+className="glassInput"
 
 value={data.date}
 
@@ -117,9 +176,9 @@ date:e.target.value
 
 <input
 
-placeholder="Preis neues Gerät"
+placeholder="Preis neues Gerät (€)"
 
-className="input"
+className="glassInput"
 
 value={data.newPrice}
 
@@ -134,42 +193,30 @@ newPrice:e.target.value
 
 
 
+<div className="flex gap-3">
+
+
 <button
 
-className="
-mt-4
-bg-black
-text-white
-px-6
-py-3
-rounded-2xl
-"
+className="mainButton"
 
 onClick={()=>{
 
 
 const life =
-categories[
-data.category as keyof typeof categories
-]
+categories[selected as keyof typeof categories]
 
 
 setResult(
 
 calculateScore(
-
 Number(data.price),
-
 data.date,
-
 Number(data.newPrice),
-
 life
-
 )
 
 )
-
 
 }}
 
@@ -183,15 +230,9 @@ Ergebnis berechnen
 
 <button
 
-onClick={reset}
+className="secondButton"
 
-className="
-ml-3
-px-6
-py-3
-rounded-2xl
-border
-"
+onClick={reset}
 
 >
 
@@ -200,11 +241,13 @@ Neu starten
 </button>
 
 
+</div>
+
+
 
 {
 result &&
 <ResultCard result={result}/>
-
 }
 
 
