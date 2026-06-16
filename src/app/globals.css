@@ -1,0 +1,17 @@
+.input{
+
+width:100%;
+padding:12px;
+margin-top:15px;
+border-radius:15px;
+background:white;
+border:1px solid #ddd;
+
+}
+
+.dark .input{
+
+background:#111;
+border-color:#333;
+
+}
