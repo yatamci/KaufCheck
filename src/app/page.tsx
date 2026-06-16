@@ -1,5 +1,5 @@
-import Calculator from "@/components/Calculator";
-import ThemeToggle from "@/components/ThemeToggle";
+import Calculator from "@/components/Calculator"
+import ThemeToggle from "@/components/ThemeToggle"
 
 
 export default function Home(){
@@ -9,20 +9,31 @@ return(
 
 <main className="
 min-h-screen
-p-8
-bg-neutral-100
-dark:bg-black
+bg-gradient-to-br
+from-neutral-100
+to-neutral-300
+dark:from-black
+dark:to-neutral-900
+p-6
 ">
 
 
-<div className="max-w-xl mx-auto">
+<div className="
+max-w-xl
+mx-auto
+">
 
 
-<div className="flex justify-between">
+<div className="
+flex
+justify-between
+items-center
+">
 
 <h1 className="
-text-4xl
+text-5xl
 font-bold
+tracking-tight
 ">
 
 KaufCheck
@@ -38,9 +49,9 @@ KaufCheck
 
 
 <p className="
-mt-4
-text-neutral-600
-dark:text-neutral-400
+mt-5
+text-xl
+opacity-70
 ">
 
 Berechne, wann sich eine Neuanschaffung wirklich lohnt.
@@ -48,10 +59,15 @@ Berechne, wann sich eine Neuanschaffung wirklich lohnt.
 </p>
 
 
+<div className="mt-10 glass rounded-[35px] p-6">
+
 <Calculator/>
+
+</div>
 
 
 </div>
+
 
 </main>
 
