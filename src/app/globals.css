@@ -1,90 +1,206 @@
 @import "tailwindcss";
 
-
-body{
-
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"SF Pro Display",
-sans-serif;
-
+:root {
+  --ios-blue: #007AFF;
+  --ios-blue-dark: #0A84FF;
+  --glass-bg: rgba(255, 255, 255, 0.58);
+  --glass-bg-dark: rgba(30, 30, 32, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-border-dark: rgba(255, 255, 255, 0.08);
+  --text-primary: #1C1C1E;
+  --text-secondary: #3A3A3C;
+  --text-tertiary: #8E8E93;
 }
 
-
-
-.glass{
-
-background:
-rgba(255,255,255,0.12);
-
-backdrop-filter:
-blur(30px);
-
-border:
-1px solid rgba(255,255,255,0.18);
-
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
-
-
-.glassInput{
-
-width:100%;
-
-padding:18px;
-
-border-radius:24px;
-
-background:
-rgba(255,255,255,0.10);
-
-backdrop-filter:
-blur(20px);
-
-border:
-1px solid rgba(255,255,255,0.2);
-
-font-size:18px;
-
-outline:none;
-
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f2f5fa;
+  transition: background 0.4s ease;
 }
 
-
-
-.mainButton{
-
-background:white;
-
-color:black;
-
-padding:
-16px 24px;
-
-border-radius:30px;
-
-font-weight:600;
-
+.dark body {
+  background: #000000;
 }
 
-
-
-.secondButton{
-
-padding:
-16px 24px;
-
-border-radius:30px;
-
-background:
-rgba(255,255,255,0.15);
-
+/* Verbesserte Glass-Klasse mit dynamischen Farben */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+.dark .glass {
+  background: var(--glass-bg-dark);
+  border-color: var(--glass-border-dark);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
 
-.dark body{
+/* iOS-typische Inputs – größer, runder, weicher */
+.glassInput {
+  width: 100%;
+  padding: 18px 22px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-size: 17px;
+  font-weight: 450;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.25s ease;
+  min-height: 58px;
+}
 
-background:#000;
+.dark .glassInput {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f5f5f7;
+}
 
+.glassInput:focus {
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.12);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.dark .glassInput:focus {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.15);
+}
+
+.glassInput::placeholder {
+  color: var(--text-tertiary);
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+/* Haupt-Button – jetzt mit iOS-Haptik */
+.mainButton {
+  background: var(--ios-blue);
+  color: white;
+  padding: 18px 28px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 17px;
+  border: none;
+  box-shadow: 0 8px 28px rgba(0, 122, 255, 0.25);
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  flex: 1;
+  min-height: 58px;
+  letter-spacing: 0.3px;
+}
+
+.mainButton:active {
+  transform: scale(0.96);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15);
+}
+
+.dark .mainButton {
+  background: var(--ios-blue-dark);
+  box-shadow: 0 8px 28px rgba(10, 132, 255, 0.2);
+}
+
+/* Sekundär-Button – transparenter, aber gut lesbar */
+.secondButton {
+  padding: 18px 24px;
+  border-radius: 40px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+  font-size: 17px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 58px;
+  min-width: 100px;
+}
+
+.dark .secondButton {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.06);
+  color: #f5f5f7;
+}
+
+.secondButton:active {
+  transform: scale(0.96);
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.dark .secondButton:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Optimierungen für mobil */
+@media (max-width: 480px) {
+  .glassInput {
+    padding: 16px 18px;
+    font-size: 16px;
+    min-height: 52px;
+    border-radius: 24px;
+  }
+  
+  .mainButton, .secondButton {
+    padding: 16px 20px;
+    font-size: 16px;
+    min-height: 52px;
+  }
+}
+
+/* Eigene Klasse für das Suchergebnis-Dropdown */
+.search-dropdown {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 28px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  padding: 6px;
+}
+
+.dark .search-dropdown {
+  background: rgba(30, 30, 32, 0.85);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
+}
+
+.search-dropdown button {
+  padding: 14px 20px;
+  border-radius: 22px;
+  font-size: 17px;
+  font-weight: 450;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+
+.dark .search-dropdown button {
+  color: #f5f5f7;
+}
+
+.search-dropdown button:hover,
+.search-dropdown button:active {
+  background: rgba(0, 122, 255, 0.08);
+}
+
+.dark .search-dropdown button:hover,
+.dark .search-dropdown button:active {
+  background: rgba(10, 132, 255, 0.12);
 }
