@@ -6,138 +6,124 @@ import { calculateScore } from "@/lib/calculator";
 import ResultCard from "./ResultCard";
 
 export default function Calculator() {
-  const list = Object.keys(categories).sort((a, b) => a.localeCompare(b));
+  const categoryList = Object.keys(categories).sort((a, b) => a.localeCompare(b));
 
-  const [search, setSearch] = useState("");
-  const [selected, setSelected] = useState("");
-  const [data, setData] = useState({
-    price: "",
-    date: "",
-    newPrice: "",
-  });
-  const [result, setResult] = useState<any>();
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [date, setDate] = useState("");
+  const [newPrice, setNewPrice] = useState("");
+  const [result, setResult] = useState<any>(null);
 
-  const filtered = list.filter((x) =>
-    x.toLowerCase().includes(search.toLowerCase())
-  );
+  const handleCalculate = () => {
+    if (!selectedCategory || !price || !date || !newPrice) {
+      alert("Bitte fülle alle Felder aus.");
+      return;
+    }
+    const life = categories[selectedCategory as keyof typeof categories];
+    const resultData = calculateScore(
+      Number(price),
+      date,
+      Number(newPrice),
+      life
+    );
+    setResult(resultData);
+  };
 
-  function reset() {
-    setSearch("");
-    setSelected("");
-    setData({ price: "", date: "", newPrice: "" });
-    setResult(undefined);
-  }
+  const handleReset = () => {
+    setSelectedCategory("");
+    setPrice("");
+    setDate("");
+    setNewPrice("");
+    setResult(null);
+  };
 
   return (
-    <div className="space-y-4">
-      {/* Kategorie-Suche – jetzt mit klarem Label */}
-      <div className="relative">
-        <label className="text-sm font-medium text-[#8E8E93] dark:text-[#98989E] px-1 block mb-1">
+    <div className="space-y-5">
+      {/* Kategorie-Dropdown */}
+      <div>
+        <label className="block text-sm font-medium text-[#6C6C70] dark:text-[#98989E] mb-1.5">
           Kategorie
         </label>
-        <input
-          placeholder="z.B. Smartphone"
-          value={search}
-          onChange={(e) => {
-            setSearch(e.target.value);
-            setSelected("");
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="w-full px-5 py-4 rounded-2xl bg-white/70 dark:bg-white/10 border border-white/30 dark:border-white/10 text-base text-[#1C1C1E] dark:text-white appearance-none focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] transition-all"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236C6C70' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right 1.5rem center",
+            backgroundSize: "1.2rem",
           }}
-          className="w-full px-4 py-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-base focus:outline-none focus:border-[#007AFF] dark:focus:border-[#0A84FF] transition-colors"
-        />
-
-        {search && !selected && filtered.length > 0 && (
-          <div className="absolute z-20 w-full mt-2 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-lg overflow-hidden">
-            {filtered.map((item) => (
-              <button
-                key={item}
-                onClick={() => {
-                  setSelected(item);
-                  setSearch(item);
-                }}
-                className="block w-full text-left px-4 py-3.5 text-base hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors border-b border-neutral-100 dark:border-neutral-800 last:border-0"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        )}
+        >
+          <option value="">Kategorie wählen</option>
+          {categoryList.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
       </div>
 
-      {/* Eingabefelder – jetzt mit Labels und als zusammenhängende Gruppe */}
-      <div className="space-y-3 bg-white/60 dark:bg-neutral-900/60 rounded-3xl p-4 backdrop-blur-sm">
+      {/* Eingabefelder – mit leichtem Glas-Hintergrund */}
+      <div className="space-y-4 p-5 rounded-3xl bg-white/30 dark:bg-white/5 border border-white/20 dark:border-white/5">
         <div>
-          <label className="text-sm font-medium text-[#8E8E93] dark:text-[#98989E] block mb-1">
+          <label className="block text-sm font-medium text-[#6C6C70] dark:text-[#98989E] mb-1.5">
             Alter Kaufpreis (€)
           </label>
           <input
+            type="number"
             placeholder="z.B. 899"
-            className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-base focus:outline-none focus:border-[#007AFF] dark:focus:border-[#0A84FF] transition-colors"
-            value={data.price}
-            onChange={(e) => setData({ ...data, price: e.target.value })}
-            inputMode="decimal"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="w-full px-5 py-3.5 rounded-xl bg-white/70 dark:bg-white/10 border border-white/30 dark:border-white/10 text-base text-[#1C1C1E] dark:text-white placeholder:text-[#8E8E93] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] transition-all"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium text-[#8E8E93] dark:text-[#98989E] block mb-1">
+          <label className="block text-sm font-medium text-[#6C6C70] dark:text-[#98989E] mb-1.5">
             Kaufdatum
           </label>
           <input
             type="date"
-            className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-base focus:outline-none focus:border-[#007AFF] dark:focus:border-[#0A84FF] transition-colors"
-            value={data.date}
-            onChange={(e) => setData({ ...data, date: e.target.value })}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="w-full px-5 py-3.5 rounded-xl bg-white/70 dark:bg-white/10 border border-white/30 dark:border-white/10 text-base text-[#1C1C1E] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] transition-all"
           />
         </div>
 
         <div>
-          <label className="text-sm font-medium text-[#8E8E93] dark:text-[#98989E] block mb-1">
+          <label className="block text-sm font-medium text-[#6C6C70] dark:text-[#98989E] mb-1.5">
             Preis neues Gerät (€)
           </label>
           <input
+            type="number"
             placeholder="z.B. 1199"
-            className="w-full px-4 py-3.5 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-base focus:outline-none focus:border-[#007AFF] dark:focus:border-[#0A84FF] transition-colors"
-            value={data.newPrice}
-            onChange={(e) => setData({ ...data, newPrice: e.target.value })}
-            inputMode="decimal"
+            value={newPrice}
+            onChange={(e) => setNewPrice(e.target.value)}
+            className="w-full px-5 py-3.5 rounded-xl bg-white/70 dark:bg-white/10 border border-white/30 dark:border-white/10 text-base text-[#1C1C1E] dark:text-white placeholder:text-[#8E8E93] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] transition-all"
           />
         </div>
       </div>
 
-      {/* Buttons – jetzt nebeneinander, gleich breit */}
-      <div className="flex gap-3">
+      {/* Buttons – jetzt mit schönerem Hover/Active-Feedback */}
+      <div className="flex flex-col sm:flex-row gap-3">
         <button
-          onClick={() => {
-            const life = categories[selected as keyof typeof categories];
-            if (!selected || !data.price || !data.date || !data.newPrice) {
-              alert("Bitte fülle alle Felder aus.");
-              return;
-            }
-            setResult(
-              calculateScore(
-                Number(data.price),
-                data.date,
-                Number(data.newPrice),
-                life
-              )
-            );
-          }}
-          className="flex-1 py-4 rounded-2xl bg-[#007AFF] dark:bg-[#0A84FF] text-white font-semibold text-base active:scale-[0.98] transition-transform"
+          onClick={handleCalculate}
+          className="flex-1 py-4 rounded-2xl bg-[#007AFF] dark:bg-[#0A84FF] text-white font-semibold text-base shadow-lg shadow-[#007AFF]/30 dark:shadow-[#0A84FF]/20 active:scale-[0.97] transition-all duration-200 hover:bg-[#0055CC] dark:hover:bg-[#0066DD]"
         >
           Berechnen
         </button>
-
         <button
-          onClick={reset}
-          className="flex-1 py-4 rounded-2xl bg-neutral-200 dark:bg-neutral-800 text-[#1C1C1E] dark:text-white font-semibold text-base active:scale-[0.98] transition-transform"
+          onClick={handleReset}
+          className="flex-1 py-4 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/30 dark:border-white/10 text-[#1C1C1E] dark:text-white font-semibold text-base active:scale-[0.97] transition-all duration-200 hover:bg-white/70 dark:hover:bg-white/20"
         >
           Zurücksetzen
         </button>
       </div>
 
-      {/* Ergebnis */}
+      {/* Ergebnis – mit Animation */}
       {result && (
-        <div className="mt-2 animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="pt-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <ResultCard result={result} />
         </div>
       )}
