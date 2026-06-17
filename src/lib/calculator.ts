@@ -1,66 +1,31 @@
 export function calculateScore(
-price:number,
-date:string,
-newPrice:number,
-life:number
-){
+  price: number,
+  date: string,
+  life: number
+) {
+  const bought = new Date(date);
+  const now = new Date();
 
-const bought =
-new Date(date);
+  // Berechne Jahre seit Kauf
+  const years = (now.getTime() - bought.getTime()) / 31557600000;
 
-const now =
-new Date();
+  // Berechne Kosten pro Jahr basierend auf Alter
+  const oldCostYear = price / years;
 
+  // Berechne Kosten pro Monat
+  const oldCostMonth = oldCostYear / 12;
 
-const years =
-(now.getTime()-bought.getTime())
-/31557600000;
+  // Berechne Nutzungsrate (0-1)
+  const usage = Math.min(years / life, 1);
 
+  // Berechne Score basierend auf Nutzungsrate
+  // Score wird höher je näher man am Ende der Lebensdauer ist
+  const score = Math.round(usage * 100);
 
-const oldCostYear =
-price / years;
-
-
-const newCostYear =
-newPrice / life;
-
-
-const efficiency =
-oldCostYear /
-(oldCostYear+newCostYear)
-*100;
-
-
-const usage =
-Math.min(years/life,1);
-
-
-const score =
-Math.round(efficiency*usage);
-
-
-
-return {
-
-years:years.toFixed(1),
-
-oldCostYear:
-oldCostYear.toFixed(2),
-
-oldCostMonth:
-(oldCostYear/12).toFixed(2),
-
-newCostYear:
-newCostYear.toFixed(2),
-
-score,
-
-remaining:
-Math.max(
-life-years,
-0
-).toFixed(1)
-
-};
-
+  return {
+    years: years.toFixed(1),
+    oldCostYear: oldCostYear.toFixed(2),
+    oldCostMonth: oldCostMonth.toFixed(2),
+    score,
+  };
 }
