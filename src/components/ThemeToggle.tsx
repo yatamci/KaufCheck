@@ -9,12 +9,12 @@ export default function ThemeToggle() {
 
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <div className="w-10 h-10 rounded-full bg-neutral-200 dark:bg-neutral-800" />;
+  if (!mounted) return <div className="w-12 h-12 rounded-full bg-white/30 dark:bg-white/5 animate-pulse" />;
 
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-lg active:scale-95 transition-transform shadow-sm"
+      className="w-12 h-12 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 flex items-center justify-center text-2xl shadow-sm active:scale-95 transition-all duration-200 hover:bg-white/60 dark:hover:bg-white/20"
       aria-label="Design umschalten"
     >
       {theme === "dark" ? "☀️" : "🌙"}
