@@ -1,11 +1,22 @@
 @import "tailwindcss";
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  -webkit-font-smoothing: antialiased;
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Nur noch für Animationen – der Rest ist jetzt in Tailwind */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f2f5fa;
+  transition: background 0.4s ease;
+}
+
+.dark body {
+  background: #000000;
+}
+
+/* Animationen (für Tailwind-Utilities) */
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -23,7 +34,7 @@ body {
 }
 
 .animate-in {
-  animation-duration: 0.3s;
+  animation-duration: 0.4s;
   animation-fill-mode: both;
 }
 
@@ -33,4 +44,22 @@ body {
 
 .slide-in-from-bottom-4 {
   animation-name: slide-in-from-bottom-4;
+}
+
+/* Entferne den Standard-Pfeil bei select (wir haben einen eigenen per SVG) */
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Optional: Scrollbar für Dropdown-Optionen – bleibt schlank */
+select option {
+  background: #ffffff;
+  color: #1C1C1E;
+}
+
+.dark select option {
+  background: #1C1C1E;
+  color: #f5f5f7;
 }
