@@ -1,31 +1,153 @@
-@import "tailwindcss";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
-* {
-  -webkit-tap-highlight-color: transparent;
+@layer base {
+  :root {
+    /* iOS 16+ Color Palette */
+    --color-primary: #007aff;
+    --color-primary-dark: #0a84ff;
+    --color-secondary: #5ac8fa;
+    --color-success: #34c759;
+    --color-warning: #ff9500;
+    --color-danger: #ff3b30;
+
+    /* Neutral Colors */
+    --color-label: #6c6c70;
+    --color-secondary-label: #8e8e93;
+    --color-tertiary-label: #d1d1d6;
+    --color-background: #ffffff;
+    --color-background-secondary: #f5f5f7;
+
+    /* Dark Mode */
+    --color-dark-primary: #0a84ff;
+    --color-dark-label: #98989e;
+    --color-dark-secondary-label: #636366;
+    --color-dark-background: #000000;
+    --color-dark-background-secondary: #1c1c1e;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-white dark:bg-black text-[#1C1C1E] dark:text-white transition-colors duration-300;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol";
+    background-attachment: fixed;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-[#007AFF]/20 text-[#007AFF];
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-white/20 dark:bg-white/5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/40 dark:bg-white/20 rounded-full hover:bg-white/60 dark:hover:bg-white/30;
+  }
+
+  /* Input Focus States */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    @apply ring-2 ring-[#007AFF] dark:ring-[#0A84FF];
+  }
+
+  /* Date Input */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    @apply cursor-pointer filter brightness-0 dark:invert;
+  }
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: #f2f5fa;
-  transition: background 0.4s ease;
+@layer components {
+  /* Glassmorphism Cards */
+  .glass-card {
+    @apply bg-white/30 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/5 rounded-3xl p-6;
+  }
+
+  .glass-card-sm {
+    @apply bg-white/30 dark:bg-white/5 backdrop-blur-md border border-white/20 dark:border-white/5 rounded-2xl p-4;
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply px-6 py-3 rounded-2xl bg-gradient-to-r from-[#007AFF] to-[#0A84FF] text-white font-semibold shadow-lg shadow-[#007AFF]/30 dark:shadow-[#0A84FF]/20 active:scale-95 transition-all duration-200 hover:shadow-lg hover:shadow-[#007AFF]/40;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-2xl bg-white/50 dark:bg-white/10 border border-white/30 dark:border-white/10 text-[#1C1C1E] dark:text-white font-semibold active:scale-95 transition-all duration-200 hover:bg-white/70 dark:hover:bg-white/20;
+  }
+
+  /* Input Styles */
+  .input-primary {
+    @apply w-full px-5 py-3.5 rounded-xl bg-white/70 dark:bg-white/10 border border-white/30 dark:border-white/10 text-base text-[#1C1C1E] dark:text-white placeholder:text-[#8E8E93] dark:placeholder:text-[#636366] focus:outline-none focus:ring-2 focus:ring-[#007AFF] dark:focus:ring-[#0A84FF] transition-all;
+  }
+
+  /* Text Styles */
+  .label-primary {
+    @apply text-sm font-semibold text-[#1C1C1E] dark:text-white;
+  }
+
+  .label-secondary {
+    @apply text-sm font-medium text-[#6C6C70] dark:text-[#98989E];
+  }
+
+  .text-secondary {
+    @apply text-[#6C6C70] dark:text-[#98989E];
+  }
+
+  .text-tertiary {
+    @apply text-[#8E8E93] dark:text-[#636366];
+  }
 }
 
-.dark body {
-  background: #000000;
+/* Custom Animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
-/* Animationen (für Tailwind-Utilities) */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-@keyframes slide-in-from-bottom-4 {
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes slide-in-from-bottom {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -33,33 +155,179 @@ body {
   }
 }
 
-.animate-in {
-  animation-duration: 0.4s;
-  animation-fill-mode: both;
+@keyframes slide-in-from-top {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.fade-in {
-  animation-name: fade-in;
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-.slide-in-from-bottom-4 {
-  animation-name: slide-in-from-bottom-4;
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-/* Entferne den Standard-Pfeil bei select (wir haben einen eigenen per SVG) */
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 3s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+
+  .delay-500 {
+    animation-delay: 0.5s;
+  }
+
+  .delay-1000 {
+    animation-delay: 1s;
+  }
+
+  .delay-2000 {
+    animation-delay: 2s;
+  }
+
+  /* Glassmorphism Overlay */
+  .backdrop-blur-glass {
+    @apply backdrop-blur-xl bg-white/30 dark:bg-white/5;
+  }
+
+  /* Smooth Transitions */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  /* Responsive Padding */
+  .px-safe {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Flex Center */
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  /* Grid Auto */
+  .grid-auto {
+    @apply grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  /* Text Gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#007AFF] to-[#0A84FF] bg-clip-text text-transparent;
+  }
+
+  /* Shadow Elevation */
+  .shadow-elevation-1 {
+    @apply shadow-sm shadow-black/5 dark:shadow-black/10;
+  }
+
+  .shadow-elevation-2 {
+    @apply shadow-md shadow-black/10 dark:shadow-black/20;
+  }
+
+  .shadow-elevation-3 {
+    @apply shadow-lg shadow-black/15 dark:shadow-black/30;
+  }
+
+  /* Border Radius */
+  .rounded-ios {
+    @apply rounded-2xl;
+  }
+
+  .rounded-ios-lg {
+    @apply rounded-3xl;
+  }
+
+  /* Hover Effects */
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1;
+  }
+
+  .hover-glow {
+    @apply transition-shadow duration-200 hover:shadow-lg hover:shadow-[#007AFF]/20;
+  }
 }
 
-/* Optional: Scrollbar für Dropdown-Optionen – bleibt schlank */
-select option {
-  background: #ffffff;
-  color: #1C1C1E;
+/* Responsive Typography */
+@media (max-width: 640px) {
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
 }
 
-.dark select option {
-  background: #1C1C1E;
-  color: #f5f5f7;
+@media (min-width: 641px) {
+  h1 {
+    @apply text-4xl;
+  }
+  h2 {
+    @apply text-3xl;
+  }
+  h3 {
+    @apply text-xl;
+  }
+}
+
+/* Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+  body {
+    color-scheme: dark;
+  }
+
+  /* Better contrast for text */
+  .text-[#1C1C1E] {
+    @apply dark:text-white;
+  }
+
+  .text-[#6C6C70] {
+    @apply dark:text-[#98989E];
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body {
+    @apply bg-white;
+  }
 }
